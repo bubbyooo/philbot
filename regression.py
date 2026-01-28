@@ -34,6 +34,11 @@ def train_model(csv_path="data/raw/Dr_Dragon_moves_dataset.csv"):
         X, y, test_size=0.2, random_state=42, shuffle=True
     )
 
+    """
+    This fits the model to the training data. We are using the logistic regression model with 2000 iterations
+    and the lbfgs solver. We had to google which solver to use in order to get the L-BFGS solver. We could
+    in the future use a CNN model instead.
+    """
     clf = LogisticRegression(max_iter=2000, solver="lbfgs", n_jobs=-1)
 
     clf.fit(X_train, y_train)

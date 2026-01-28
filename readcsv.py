@@ -1,6 +1,10 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
 
+"""
+This file gives an overview of the dataset and training information.
+"""
+
 df = pd.read_csv("data/raw/Dr_Dragon_moves_dataset.csv")
 train_df, test_df = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
 
