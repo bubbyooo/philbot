@@ -15,7 +15,8 @@ def choose_move_logreg(board, model):
 
     """
     This reshapes the board features into a 1D array and passes it to the model to 
-    get the probabilities of the moves.
+    get the probabilities of the moves. We are planning on shaping it into a 2D array later
+    in order to do a CNN training
     """
     x = board_features(board).reshape(1, -1)
     probs = model.predict_proba(x)[0]

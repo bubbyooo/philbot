@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 from regression import train_model
 from features import board_features
 
+"""
+This file plots the logistic regression vs random baseline.
+"""
 
 def logistic_topk(board: chess.Board, model, k: int) -> np.ndarray:
     """Return the top-k destination squares predicted by the model."""
