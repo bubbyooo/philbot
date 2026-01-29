@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from features import board_features
 import chess
 
@@ -27,3 +28,13 @@ def choose_move_logreg(board, model):
     This returns the move with the highest probability destination square.
     """
     return scored[0]
+
+
+def choose_move_random(board):
+    """
+    Chooses a random legal move from the current board position.
+    """
+    legal = list(board.legal_moves)
+    if not legal:
+        raise ValueError("No legal moves.")
+    return random.choice(legal)
