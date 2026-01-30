@@ -1,6 +1,6 @@
 import chess
-from regression import train_model
-from MoveChoice import choose_move_logreg, choose_move_random
+from regression import train_model, train_model_cnn
+from MoveChoice import choose_move_logreg, choose_move_random, choose_move_cnn
 
 """
 This is the main file that runs the bot. It creates the board, 
@@ -24,11 +24,15 @@ def prompt_human_move(board: chess.Board) -> chess.Move:
 
 if __name__ == "__main__":
     print("Select game mode:")
-    print("1. Human vs Trained Bot")
-    print("2. Trained Bot vs Random Bot")
-    mode = input("Enter mode (1 or 2): ").strip()
+    print("1. Human vs LogReg-trained Bot")
+    print("2. LogReg-trained Bot vs Random Bot")
+    print("3. Human vs CNN-trained Bot")
+    print("4. CNN-trained Bot vs LogReg-trained Bot")
+    mode = input("Enter mode (1 or 2 or 3 or 4): ").strip()
     
-    model = train_model("data/raw/Dr_Dragon_moves_dataset.csv")
+    logreg_model = train_model("data/raw/Dr_Dragon_moves_dataset.csv")
+
+    cnn_model = train_model_cnn("data/raw/Dr_Dragon_moves_dataset.csv", epochs=4)
 
     board = chess.Board()
     
@@ -43,7 +47,7 @@ if __name__ == "__main__":
                 move = prompt_human_move(board)
                 board.push(move)
             else:
-                bot_move = choose_move_logreg(board, model)
+                bot_move = choose_move_logreg(board, logreg_model)
                 print(f"Bot plays: {bot_move.uci()}")
                 board.push(bot_move)
 
@@ -57,13 +61,49 @@ if __name__ == "__main__":
 
         while not board.is_game_over():
             if board.turn == trained_bot_color:
-                bot_move = choose_move_logreg(board, model)
+                bot_move = choose_move_logreg(board, logreg_model)
                 print(f"Trained Bot plays: {bot_move.uci()}")
                 board.push(bot_move)
             else:
                 random_move = choose_move_random(board)
                 print(f"Random Bot plays: {random_move.uci()}")
                 board.push(random_move)
+
+            print(board, "\n")
+
+    elif mode == '3':
+        # Human playing against the cnn-trained bot
+        human_color = chess.WHITE
+        print("\nYou are playing as White. The CNN Trained Bot is Black.\n")
+        print(board, "\n")
+
+
+        while not board.is_game_over():
+            if board.turn == human_color:
+                move = prompt_human_move(board)
+                board.push(move)
+            else:
+                bot_move = choose_move_cnn(board, cnn_model)
+                print(f"CNN Trained Bot plays: {bot_move.uci()}")
+                board.push(bot_move)
+
+            print(board, "\n")
+
+    elif mode == '4':
+        # LogReg-trained bot playing against the cnn-trained bot
+        trained_bot_color = chess.WHITE
+        print("\nCNN Trained Bot (White) vs LogReg Trained Bot (Black)\n")
+        print(board, "\n")
+
+        while not board.is_game_over():
+            if board.turn == trained_bot_color:
+                bot_move = choose_move_cnn(board, cnn_model)
+                print(f"CNN Trained Bot plays: {bot_move.uci()}")
+                board.push(bot_move)
+            else:
+                bot2_move = choose_move_logreg(board, logreg_model)
+                print(f"LogReg Trained Bot plays: {bot2_move.uci()}")
+                board.push(bot2_move)
 
             print(board, "\n")
 

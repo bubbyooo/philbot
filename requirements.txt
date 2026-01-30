@@ -1,7 +1,6 @@
-PhilBot requirements:
 # List of dependencies
-python-chess==1.11.2
-torch==2.10
+python-chess==1.1.0
+torch==2.2.2
 numpy==2.4.1
 pandas==3.0.0
 matplotlib==3.10
@@ -11,4 +10,4 @@ requests==2.32.5
 pyyaml==6.0.3
 tqdm==4.67.1
 tensorboard==2.20.0  # For training visualization
-scikit-learn==1.8    # For train/val split
+scikit-learn==1.8    # For train/val split6

@@ -29,6 +29,20 @@ def choose_move_logreg(board, model):
     """
     return scored[0]
 
+def choose_move_cnn(board, model):
+    """
+    Choose a move using a convolutional neural network model.
+    """
+    legal = list(board.legal_moves)
+    if not legal:
+        raise ValueError("No legal moves.")
+    
+    x = board_features(board).reshape(1, 8, 8, 18)
+    probs = model.predict(x)[0]
+    scored = sorted(legal, key=lambda m: probs[m.to_square], reverse=True)
+
+    return scored[0]
+
 
 def choose_move_random(board):
     """
